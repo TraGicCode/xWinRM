@@ -46,3 +46,14 @@ Test-xDscSchema -Path .\DSCResources\MSFT_xWinRMListener\MSFT_xWinRMListener.sch
 
 ## Determines if the given resource will work with the Dsc Engine
 Test-xDscResource -Name .\DSCResources\MSFT_xWinRMListener
+
+
+
+
+
+# Best Practices
+Please see the BestPractices.md in DscResources repo, especially the sections Get-TargetResource should not contain unused non-mandatory parameters and Use Identical Parameters for Set-TargetResource and Test-TargetResource (unfortunately this section has not ben completed).
+
+I will add a more complete contributions section in the README.md as I did in xSQLServer README.md Contribution section
+
+https://github.com/PowerShell/DscResources/blob/master/BestPractices.md#use-identical-parameters-for-set-targetresource-and-test-targetresource
