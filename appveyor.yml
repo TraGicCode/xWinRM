@@ -7,6 +7,7 @@ build: off
 install:
   - ps: |
         Find-Package Pester | Install-Package -SkipValidate
+        Find-Package xDSCResourceDesigner | Install-Package -SkipValidate
 
 test_script:
     - ps: |
