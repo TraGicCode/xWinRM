@@ -4,9 +4,13 @@ os: Windows Server 2012 R2
 
 build: off
 
+install:
+  - ps: |
+        Find-Package Pester | Install-Package
 
 test_script:
-  - Invoke-Pester -Path .\Tests\Unit -OutputFile ".\TestResults.xml" -OutputFormat NUnitxml -CodeCoverage .\DSCResources\*
+    - ps: |
+          Invoke-Pester -Path .\Tests\Unit -OutputFile ".\TestResults.xml" -OutputFormat NUnitxml -CodeCoverage .\DSCResources\*
 
 
 notifications:
