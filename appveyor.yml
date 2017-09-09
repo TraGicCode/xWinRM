@@ -6,7 +6,7 @@ build: off
 
 install:
   - ps: |
-        Find-Package Pester | Install-Package
+        Find-Package Pester | Install-Package -SkipPublisherCheck
 
 test_script:
     - ps: |
