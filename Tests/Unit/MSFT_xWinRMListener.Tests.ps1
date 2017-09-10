@@ -3,12 +3,12 @@ $Global:DSCResourceName = 'MSFT_xWinRMListener'  #<----- Just change this
 Import-Module "$($PSScriptRoot)\..\..\DSCResources\$($Global:DSCResourceName)\$($Global:DSCResourceName).psm1" -Force
 
 InModuleScope $Global:DSCResourceName {
-    Describe 'xWinRMListener' {
 
-        $mockParameters = @{
-            Address = '127.0.0.1'
-            Transport = 'HTTP'
-        }
+    $mockParameters = @{
+        Address = '127.0.0.1'
+        Transport = 'HTTP'
+    }
+    Describe 'xWinRMListener' {
 
         It 'is syntactically correct' {
             Test-xDscSchema "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener\MSFT_xWinRMListener.schema.mof"
@@ -30,6 +30,10 @@ InModuleScope $Global:DSCResourceName {
     }
 
     Describe 'Test-TargetResource' {
+
+        It 'returns a boolean' {
+            (Test-TargetResource @mockParameters) | Should BeOfType [Boolean]
+        }
     }
 
 
