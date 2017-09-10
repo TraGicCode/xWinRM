@@ -20,8 +20,17 @@ InModuleScope $Global:DSCResourceName {
 
         Describe 'Get-TargetResource' {
 
+            $WinRMListener = Get-TargetResource @mockParameters
+
             It 'returns a hashtable' {
-                (Get-TargetResource @mockParameters) | Should BeOfType [Hashtable]
+                $WinRMListener | Should BeOfType [Hashtable]
+            }
+
+            foreach($expectedKey in 'Address', 'Transport')
+            {
+                It "returns $expectedKey in the hashtable" {
+                    $WinRMListener.Contains($expectedKey) | Should Be $true
+                }
             }
         }
     }
