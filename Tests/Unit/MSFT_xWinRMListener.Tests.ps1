@@ -97,14 +97,20 @@ Transport = 'HTTP'
         }
       }
 
-      # It 'calls Get-TargetResource Correctly' {
-      #   Mock Get-TargetResource
-      #   Test-TargetResource -Address '127.0.0.1' -Transport 'http'
-      #   Assert-MockCalled Get-TargetResource -Exactly -Times 1 -ParameterFilter {
-      #     $Address -eq '127.0.0.1' -and
-      #     $Transport -eq 'http'
-      #   }
-      # }
+      Context 'When the resource does not exist' {
+        Mock Get-TargetResource { return $null }
+        It 'returns false' {
+          Test-TargetResource -Address '127.0.0.1' -Transport 'http' | Should be $false
+        }
+      }
+
+      Context 'When the resource is in the desired state' {
+        Mock Get-TargetResource { return @{ Address='10.20.1.2'; Transport='http' } }
+        It 'returns true' {
+          Test-TargetResource -Address '127.0.0.1' -Transport 'http' | Should be $true
+        }
+      }
+
     }
 
 
