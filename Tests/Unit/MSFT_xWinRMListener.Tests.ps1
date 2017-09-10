@@ -79,12 +79,12 @@ Transport = 'HTTP'
     Describe "Test-TargetResource" {
 
       It 'returns a boolean' {
-        (Test-TargetResource @mockParameters) | Should BeOfType [Boolean]
+        (Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http') | Should BeOfType [Boolean]
       }
 
       Context 'When calling Get-TargetResource' {
         Mock Get-TargetResource
-        Test-TargetResource -Address '127.0.0.1' -Transport 'http'
+        Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
 
         It 'forwarders parameters to Get-TargetResource Correctly' {
           Assert-MockCalled Get-TargetResource -ParameterFilter {
@@ -100,15 +100,29 @@ Transport = 'HTTP'
       Context 'When the resource does not exist' {
         Mock Get-TargetResource { return $null }
         It 'returns false' {
-          Test-TargetResource -Address '127.0.0.1' -Transport 'http' | Should be $false
+          Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' | Should be $false
         }
       }
 
       Context 'When the resource is in the desired state' {
-        Mock Get-TargetResource { return @{ Address='10.20.1.2'; Transport='http' } }
+        Mock Get-TargetResource { return @{Ensure='Present';Address='127.0.0.1'; Transport='http' } }
         It 'returns true' {
-          Test-TargetResource -Address '127.0.0.1' -Transport 'http' | Should be $true
+          Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' | Should be $true
         }
+      }
+
+      Context 'When Ensure is absent' {
+        Context 'When the resource is present on the system' {
+          Mock Get-TargetResource { return @{ Ensure='Present';Address='127.0.0.1'; Transport='http' } }
+          It 'returns false' {
+            Test-TargetResource -Ensure 'Absent' -Address '127.0.0.1' -Transport 'http' | Should be $false
+          }
+        }
+
+        Context 'When the resource is absent' {
+
+        }
+
       }
 
     }
