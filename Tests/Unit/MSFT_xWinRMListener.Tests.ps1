@@ -28,7 +28,7 @@ InModuleScope $Global:DSCResourceName {
 
             foreach($expectedKey in 'Address', 'Transport')
             {
-                It "returns $expectedKey in the hashtable" {
+                It "returns the expected key of $expectedKey in the hashtable" {
                     $WinRMListener.Contains($expectedKey) | Should Be $true
                 }
             }
