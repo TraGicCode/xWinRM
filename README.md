@@ -75,3 +75,17 @@ DSC Resources live in DSC Resource modules therefore you install them like you d
 Install-Module -Name xNetworking
 
 All DSC Resources live in a DSC Resource Module in the DSCResourced folder
+
+
+Really awesome way to see the schema of the resource
+get-dscresource -Name xWinRMListener -Syntax
+```
+xWinRMListener [String] #ResourceName       
+{                                           
+    Address = [string]                      
+    Transport = [string]{ HTTP | HTTPS }    
+    [DependsOn = [string[]]]                
+    [Ensure = [string]{ Absent | Present }] 
+    [PsDscRunAsCredential = [PSCredential]] 
+}                                           
+```

@@ -18,9 +18,12 @@ InModuleScope $Global:DSCResourceName {
             Test-xDscResource "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener"
         }
 
-        It 'is returned from Get-DscResource' {
-            { Get-Dscresource -Name xWinRMListener } | Should Not Throw
-        }
+        # It 'is returned from Get-DscResource' {
+        #     { Get-Dscresource -Name xWinRMListener } | Should Not Throw
+        # }
+
+        # get-dscresource -Name xWinRMListener | Select-Object -ExpandProperty Properties
+        # get-dscresource -Name xWinRMListener -Syntax
 
         Describe 'Get-TargetResource' {
 
@@ -36,10 +39,31 @@ InModuleScope $Global:DSCResourceName {
                     $WinRMListener.Contains($expectedKey) | Should Be $true
                 }
             }
+
+            Context 'when the listener exists' {
+                
+                Mock Get-WinRMListers { return @(@{ Address='127.0.0.1'; Transport='http' }) }
+                $WinRMListener = Get-TargetResource -Address '127.0.0.1' -Transport 'http'
+                It 'should return the correct hashtable' { 
+                    $WinRMListener.Ensure | Should Be 'Present'
+                    $WinRMListener.Address | Should Be '127.0.0.1'
+                    $WinRMListener.Transport | Should Be 'http' 
+                }
+            }
+
+            Context 'when the listener does not exist' {
+                Mock Get-WinRMListers { return @(@{ Address='10.20.1.2'; Transport='http' }) }
+                
+                $WinRMListener = Get-TargetResource -Address '127.0.0.1' -Transport 'http'
+                it 'should reutrn the correct hashtable' {
+                    $WinRMListener.Ensure | Should Be 'Absent'
+                }
+            }
         }
     }
 
     Describe 'Set-TargetResource' {
+
     }
 
     Describe 'Test-TargetResource' {
