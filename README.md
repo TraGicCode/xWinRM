@@ -57,3 +57,8 @@ Please see the BestPractices.md in DscResources repo, especially the sections Ge
 I will add a more complete contributions section in the README.md as I did in xSQLServer README.md Contribution section
 
 https://github.com/PowerShell/DscResources/blob/master/BestPractices.md#use-identical-parameters-for-set-targetresource-and-test-targetresource
+
+
+# How to test locally
+$env:PSModulePath += ";C:\Users\tragiccode\Source\GitHub\DSCDevelopment"
+Get-DscResource

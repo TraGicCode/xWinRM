@@ -1,0 +1,23 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: dsc
+  dsc_local_configuration_manager_version: wmf5
+
+verifier:
+  name: pester
+  test_folder: Tests/Integration
+
+platforms:
+  - name: windows-2016-standard
+    driver:
+      box: tragiccode/windows-2016-standard
+
+suites:
+  - name: Example
+    provisioner: 
+      configuration_script_folder: Examples/Resources/xWinRMListener
+      configuration_script: CreateHTTPListener.ps1
+      configuration_name: CreateHTTPListener

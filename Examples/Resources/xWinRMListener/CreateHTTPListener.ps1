@@ -3,7 +3,7 @@
     This example shows how to create a WinRM Listener on a node.
 #>
 
-Configuration Example
+Configuration CreateHTTPListener
 {
     Import-DscResource -ModuleName xWinRM
 
@@ -12,7 +12,8 @@ Configuration Example
         xWinRMListener CreateListener
         {
             Ensure = 'Present'
-            Name   = 'test'
+            Address = '127.0.0.1'
+            Transport = 'HTTP'
         }
     }
 }
