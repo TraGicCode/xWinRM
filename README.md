@@ -89,3 +89,8 @@ xWinRMListener [String] #ResourceName
     [PsDscRunAsCredential = [PSCredential]] 
 }                                           
 ```
+
+
+
+# Decent Reference
+https://github.com/PowerShell/xComputerManagement/blob/dev/DSCResources/MSFT_xScheduledTask/MSFT_xScheduledTask.psm1
