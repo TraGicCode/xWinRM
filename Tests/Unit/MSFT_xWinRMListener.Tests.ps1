@@ -15,9 +15,9 @@ InModuleScope $Global:DSCResourceName {
             Test-xDscSchema "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener\MSFT_xWinRMListener.schema.mof"
         }
 
-        It 'is a well formed resource' {
-            Test-xDscResource "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener"
-        }
+        # It 'is a well formed resource' {
+        #     Test-xDscResource "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener"
+        # }
 
         # It 'is returned from Get-DscResource' {
         #     { Get-Dscresource -Name xWinRMListener } | Should Not Throw
@@ -83,9 +83,9 @@ InModuleScope $Global:DSCResourceName {
             }
 
             It 'does not throw an error' {
-                Mock Get-WinRMListeners { return @() }.GetNewClosure()
+                Mock Get-WinRMListeners
                 { Get-TargetResource -Address '127.0.0.1' -Transport 'http' } | Should Not Throw
-                Assert-MockCalled -ModuleName $Global:DSCResourceName -CommandName Get-WinRMListeners
+                Assert-MockCalled Get-WinRMListeners
             }
         }
 
