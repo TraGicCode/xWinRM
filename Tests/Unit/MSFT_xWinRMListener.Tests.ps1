@@ -8,6 +8,7 @@ InModuleScope $Global:DSCResourceName {
         Address = '127.0.0.1'
         Transport = 'HTTP'
     }
+
     Describe 'xWinRMListener' {
 
         It 'is syntactically correct' {
@@ -24,6 +25,8 @@ InModuleScope $Global:DSCResourceName {
 
         # get-dscresource -Name xWinRMListener | Select-Object -ExpandProperty Properties
         # get-dscresource -Name xWinRMListener -Syntax
+
+        
 
         Describe 'Get-TargetResource' {
 
@@ -42,17 +45,17 @@ InModuleScope $Global:DSCResourceName {
 
             Context 'when the listener exists' {
                 
-                Mock Get-WinRMListers { return @(@{ Address='127.0.0.1'; Transport='http' }) }
+                Mock Get-WinRMListeners { return @(@{ Address='127.0.0.1'; Transport='http' }) }
                 $WinRMListener = Get-TargetResource -Address '127.0.0.1' -Transport 'http'
                 It 'should return the correct hashtable' { 
                     $WinRMListener.Ensure | Should Be 'Present'
                     $WinRMListener.Address | Should Be '127.0.0.1'
-                    $WinRMListener.Transport | Should Be 'http' 
+                    $WinRMListener.Transport | Should Be 'http'
                 }
             }
 
             Context 'when the listener does not exist' {
-                Mock Get-WinRMListers { return @(@{ Address='10.20.1.2'; Transport='http' }) }
+                Mock Get-WinRMListeners { return @(@{ Address='10.20.1.2'; Transport='http' }) }
                 
                 $WinRMListener = Get-TargetResource -Address '127.0.0.1' -Transport 'http'
                 it 'should reutrn the correct hashtable' {
@@ -62,27 +65,33 @@ InModuleScope $Global:DSCResourceName {
 
             Context 'when no listeners exist' {
                 It 'does not throw an error' {
-                    Mock Get-WinRMListers { return @() }
+                    Mock Get-WinRMListeners { return @() }
                     { Get-TargetResource -Address '127.0.0.1' -Transport 'http' } | Should Not Throw
                 }
             }
         }
-    }
 
-    Describe 'Set-TargetResource' {
+        
+        Describe 'Set-TargetResource' {
 
-    }
+        }
 
-    Describe 'Test-TargetResource' {
+        Describe "Test-TargetResource" {
 
-        It 'returns a boolean' {
-            (Test-TargetResource @mockParameters) | Should BeOfType [Boolean]
+            It 'returns a boolean' {
+                (Test-TargetResource @mockParameters) | Should BeOfType [Boolean]
+            }
+
+            It 'does not throw an error' {
+                Mock Get-WinRMListeners { return @() }.GetNewClosure()
+                { Get-TargetResource -Address '127.0.0.1' -Transport 'http' } | Should Not Throw
+                Assert-MockCalled -ModuleName $Global:DSCResourceName -CommandName Get-WinRMListeners
+            }
+        }
+
+
+        Describe 'Get-WinRMListeners' {
+
         }
     }
-
-
-    Describe 'Get-WinRMListeners' {
-
-    }
-
 }
