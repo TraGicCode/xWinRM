@@ -62,3 +62,16 @@ https://github.com/PowerShell/DscResources/blob/master/BestPractices.md#use-iden
 # How to test locally
 $env:PSModulePath += ";C:\Users\tragiccode\Source\GitHub\DSCDevelopment"
 Get-DscResource
+
+
+# Find ONLY dsc resource modules
+Find-Module -Includes DscResource
+Find-Module -Name *winrm* -Includes DscResource
+
+Find-DscResource Finds all dsc reosurce available on the PS Gallery
+Find-DScResource -Name *Route*
+
+DSC Resources live in DSC Resource modules therefore you install them like you do modules
+Install-Module -Name xNetworking
+
+All DSC Resources live in a DSC Resource Module in the DSCResourced folder
