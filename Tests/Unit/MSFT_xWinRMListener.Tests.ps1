@@ -82,14 +82,29 @@ Transport = 'HTTP'
         (Test-TargetResource @mockParameters) | Should BeOfType [Boolean]
       }
 
-      It 'does not throw an error' {
+      Context 'When calling Get-TargetResource' {
         Mock Get-TargetResource
         Test-TargetResource -Address '127.0.0.1' -Transport 'http'
-        Assert-MockCalled Get-TargetResource -Exactly -Times 1 -ParameterFilter {
-          $Address -eq '127.0.0.1' -and
-          $Transport -eq 'http'
+
+        It 'forwarders parameters to Get-TargetResource Correctly' {
+          Assert-MockCalled Get-TargetResource -ParameterFilter {
+            $Address -eq '127.0.0.1' -and
+            $Transport -eq 'http'
+          }
+        }
+        It 'is called 1 time' {
+          Assert-MockCalled Get-TargetResource -Exactly -Times 1
         }
       }
+
+      # It 'calls Get-TargetResource Correctly' {
+      #   Mock Get-TargetResource
+      #   Test-TargetResource -Address '127.0.0.1' -Transport 'http'
+      #   Assert-MockCalled Get-TargetResource -Exactly -Times 1 -ParameterFilter {
+      #     $Address -eq '127.0.0.1' -and
+      #     $Transport -eq 'http'
+      #   }
+      # }
     }
 
 
