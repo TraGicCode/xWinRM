@@ -59,6 +59,13 @@ InModuleScope $Global:DSCResourceName {
                     $WinRMListener.Ensure | Should Be 'Absent'
                 }
             }
+
+            Context 'when no listeners exist' {
+                It 'does not throw an error' {
+                    Mock Get-WinRMListers { return @() }
+                    { Get-TargetResource -Address '127.0.0.1' -Transport 'http' } | Should Not Throw
+                }
+            }
         }
     }
 
