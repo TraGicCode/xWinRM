@@ -18,6 +18,10 @@ InModuleScope $Global:DSCResourceName {
             Test-xDscResource "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener"
         }
 
+        It 'is returned from Get-DscResource' {
+            { Get-Dscresource -Name xWinRMListener } | Should Not Throw
+        }
+
         Describe 'Get-TargetResource' {
 
             $WinRMListener = Get-TargetResource @mockParameters
