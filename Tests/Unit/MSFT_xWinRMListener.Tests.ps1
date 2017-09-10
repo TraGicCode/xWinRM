@@ -74,6 +74,31 @@ Transport = 'HTTP'
 
     Describe 'Set-TargetResource' {
 
+      It 'calls Get-TargetResource' {
+        Mock Get-TargetResource
+
+        Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
+
+        Assert-MockCalled Get-TargetResource -Exactly -Times 1
+      }
+
+      Context 'When calling Get-TargetResource' {
+        Context 'When the Resource already exists' {
+          It 'calls winrm.exe set subcommand' {
+            # Mock New-WinRMListener
+            # Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
+            # Assert-MockCalled New-WinRMListener -Exactly -Times 1
+          }
+        }
+
+        Context 'When the resource does not exist' {
+          It 'calls winrm.exe create subcommand' {
+            
+          }
+        }
+
+      }
+
     }
 
     Describe "Test-TargetResource" {
