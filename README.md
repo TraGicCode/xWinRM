@@ -100,3 +100,6 @@ https://github.com/PowerShell/xComputerManagement/blob/dev/DSCResources/MSFT_xSc
 Invoke-DscResource -Name xWinRMListener -Method Test -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
 
 Invoke-DscResource -Name xWinRMListener -Method Test -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
+
+
+Invoke-DscResource -Name xWinRMListener -Method Set -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}

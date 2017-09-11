@@ -75,7 +75,7 @@ $mockParameters = @{
     Describe 'Set-TargetResource' {
 
       It 'calls Get-TargetResource' {
-        Mock Get-TargetResource
+        Mock Get-TargetResource { return @{Ensure='Present'; Address='127.0.0.1'; Transport='http'} }
         Mock Configure-WinRMListener
         Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
 
@@ -83,14 +83,12 @@ $mockParameters = @{
       }
 
       Context 'When calling Get-TargetResource' {
-        Context 'When the resource exists' {
-          Mock Get-TargetResource { return @{Ensure='Present'; } }
-          It 'calls winrm.exe set subcommand' {
+        Context 'When the resource exists and has not drifted' {
+          Mock Get-TargetResource { return @{Ensure='Present'; Address='127.0.0.1'; Transport='http'} }
+          It 'will not call Confiugre-WinRMListener' {
             Mock Configure-WinRMListener
             Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
-            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
-              $Operation -eq 'update'
-            }
+            Assert-MockCalled Configure-WinRMListener -Exactly -Times 0
           }
         }
 
