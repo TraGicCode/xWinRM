@@ -13,6 +13,24 @@ test_script:
     - ps: |
           Invoke-Pester -Path .\Tests\Unit -OutputFile ".\TestResults.xml" -OutputFormat NUnitxml -CodeCoverage .\DSCResources\*
 
+deploy_script:
+- ps: |
+      if($env:APPVEYOR_REPO_BRANCH -eq "masterdddd") {
+
+        # Extract version from changelog
+
+        # Update the xWinRM.psd1 extracted version
+
+        # commit & tag
+        
+        Publish-Module -NuGetApiKey $env:PSGalleryApiKey -Path $env:APPVEYOR_BUILD_FOLDER -Confirm:$false;
+        
+        git config --global credential.helper store
+        Add-Content "$env:USERPROFILE\.git-credentials" "https://${env:GitHubKey}:x-oauth-basic@github.com`n"
+        
+        git tag $env:APPVEYOR_BUILD_VERSION
+        git push origin -q $env:APPVEYOR_BUILD_VERSION
+      } 
 
 notifications:
   - provider: Slack
