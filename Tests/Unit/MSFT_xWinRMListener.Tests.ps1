@@ -76,7 +76,7 @@ Transport = 'HTTP'
 
       It 'calls Get-TargetResource' {
         Mock Get-TargetResource
-
+        Mock Configure-WinRMListener
         Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
 
         Assert-MockCalled Get-TargetResource -Exactly -Times 1
@@ -86,18 +86,18 @@ Transport = 'HTTP'
         Context 'When the Resource exists' {
           Mock Get-TargetResource { return @{Ensure='Present'; } }
           It 'calls winrm.exe set subcommand' {
-            Mock Edit-WinRMListener
+            Mock Configure-WinRMListener
             Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
-            Assert-MockCalled Edit-WinRMListener -Exactly -Times 1
+            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1
           }
         }
 
         Context 'When the resource does not exist' {
           Mock Get-TargetResource { return @{Ensure='Absent'; } }
           It 'calls winrm.exe create subcommand' {
-            Mock New-WinRMListener
+            Mock Configure-WinRMListener
             Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
-            Assert-MockCalled New-WinRMListener -Exactly -Times 1
+            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1
           }
         }
 

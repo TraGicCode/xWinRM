@@ -94,3 +94,9 @@ xWinRMListener [String] #ResourceName
 
 # Decent Reference
 https://github.com/PowerShell/xComputerManagement/blob/dev/DSCResources/MSFT_xScheduledTask/MSFT_xScheduledTask.psm1
+
+
+# Manually calling/Testing the individual Get/Set/Test methods
+Invoke-DscResource -Name xWinRMListener -Method Test -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
+
+Invoke-DscResource -Name xWinRMListener -Method Test -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
