@@ -1,105 +1,86 @@
-A DSC Resource is a powershell module that contains the following
-1.) Schema of the dsc resource in mof file format
-2.) the dsc implementation code in powershell format
+# xWinRM
 
-NOTE: in powershell v5 you can use class based resources and not worry about the schema.  Therefore a dsc module would only contain powershell code
+The **xWinRM** module contains DSC resources for configuration
+of WinRM.
 
+## Branches
 
-# Parameters much match
-Your Get-TargetResource, Test-TargetResource, and Set-TargetResource MUST always
-have the same parameters
+### master
 
+This is the branch containing the latest release - no contributions should be made
+directly to this branch.
 
-# Brings the state of the system to the desired state
-# Idempotency is implemented here
-# No Return value simply throw exception if failure else its success
-Set-TargetResource
+### dev
 
+This is the development branch to which contributions should be proposed by contributors
+as pull requests. This development branch will periodically be merged to the master
+branch, and be released to [PowerShell Gallery](https://www.powershellgallery.com/).
 
-# Compare current state to expected state
-# returns true if in desired state or false otherwise
-function Test-TargetResource
+## Contributing
 
-# Must return all paramaeters along with their corresponding values for the target system
-Get-TargetResource
+Regardless of the way you want to contribute we are tremendously happy to have you
+here.
 
+There are several ways you can contribute. You can submit an issue to report a bug.
+You can submit an issue to request an improvement. You can take part in discussions
+for issues. You can review pull requests and comment on other contributors changes.
+You can also improve the resources and tests, or even create new resources, by
+sending in pull requests yourself.
 
+## Installation
 
-# Automatic creation of dsc resource files structure
-Install-Package xDscResourceDesigner
+To manually install the module, download the source code and unzip the contents
+of the '\Modules\xWinRM' directory to the
+'$env:ProgramFiles\WindowsPowerShell\Modules' folder.
 
-$Ensure = New-xDscResourceProperty -Name "Ensure" -Type "String" -Attribute Write -ValidateSet "Present","Absent" -Description "Ensure Present or Absent"
+To install from the PowerShell gallery using PowerShellGet (in PowerShell 5.0) run
+the following command:
 
-$Address = New-xDscResourceProperty -Name "Address" -Type "String" -Attribute Key -Description "Address????"
-
-New-xDscResource -Name "MSFT_xWinRMListener" -Property $Ensure, $Address
-
-# Update dsc resource when adding new parameter
-$Transport = New-xDscResourceProperty -Name "Transport" -Type "String" -ValidateSet "HTTP", "HTTPS" -Attribute Key -Description "The Protocol for connections"
-
-Update-xDscResource -Name "MSFT_xWinRMListener" -Property $Ensure, $Address, $Transport -ClassVersion 1.0 -Force
-
-
-# Testing
-## Test schema and powershell file have same parameters
-Test-xDscSchema -Path .\DSCResources\MSFT_xWinRMListener\MSFT_xWinRMListener.schema.mof
-
-## Determines if the given resource will work with the Dsc Engine
-Test-xDscResource -Name .\DSCResources\MSFT_xWinRMListener
-
-
-
-
-
-# Best Practices
-Please see the BestPractices.md in DscResources repo, especially the sections Get-TargetResource should not contain unused non-mandatory parameters and Use Identical Parameters for Set-TargetResource and Test-TargetResource (unfortunately this section has not ben completed).
-
-I will add a more complete contributions section in the README.md as I did in xSQLServer README.md Contribution section
-
-https://github.com/PowerShell/DscResources/blob/master/BestPractices.md#use-identical-parameters-for-set-targetresource-and-test-targetresource
-
-
-# How to test locally
-$env:PSModulePath += ";C:\Users\tragiccode\Source\GitHub\DSCDevelopment"
-Get-DscResource
-
-
-# Find ONLY dsc resource modules
-Find-Module -Includes DscResource
-Find-Module -Name *winrm* -Includes DscResource
-
-Find-DscResource Finds all dsc reosurce available on the PS Gallery
-Find-DScResource -Name *Route*
-
-DSC Resources live in DSC Resource modules therefore you install them like you do modules
-Install-Module -Name xNetworking
-
-All DSC Resources live in a DSC Resource Module in the DSCResourced folder
-
-
-Really awesome way to see the schema of the resource
-get-dscresource -Name xWinRMListener -Syntax
-```
-xWinRMListener [String] #ResourceName       
-{                                           
-    Address = [string]                      
-    Transport = [string]{ HTTP | HTTPS }    
-    [DependsOn = [string[]]]                
-    [Ensure = [string]{ Absent | Present }] 
-    [PsDscRunAsCredential = [PSCredential]] 
-}                                           
+```powershell
+Find-Module -Name xWinRM -Repository PSGallery | Install-Module
 ```
 
+To confirm installation, run the below command and ensure you see the WinRM
+DSC resources available:
 
+```powershell
+Get-DscResource -Module xWinRM
+```
 
-# Decent Reference
-https://github.com/PowerShell/xComputerManagement/blob/dev/DSCResources/MSFT_xScheduledTask/MSFT_xScheduledTask.psm1
+## Requirements
 
+The minimum Windows Management Framework (PowerShell) version required is 5.0 or
+higher, which ships with Windows 10 or Windows Server 2016, but can also be
+installed on Windows 7 SP1, Windows 8.1, Windows Server 2008 R2 SP1,
+Windows Server 2012 and Windows Server 2012 R2.
 
-# Manually calling/Testing the individual Get/Set/Test methods
-Invoke-DscResource -Name xWinRMListener -Method Test -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
+## Examples
 
-Invoke-DscResource -Name xWinRMListener -Method Test -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
+You can review the [Examples](/Examples) directory in the xWinRM module for
+some general use scenarios for all of the resources that are in the module.
 
+## Change log
 
-Invoke-DscResource -Name xWinRMListener -Method Set -ModuleName xWinRM -Property @{Ensure="Present";Address="IP:127.0.0.1";Transport='http'}
+A full list of changes in each version can be found in the [change log](CHANGELOG.md).
+
+## Resources
+
+* [**xWinRMListener**](#xwinrmlistener) resource to manage WinRM Listeners.
+
+### xWinRMListener
+
+Manages the WinRM Listeners.
+
+#### Requirements
+
+* Target machine must be running Windows Server 2008 R2 or later.
+
+#### Parameters
+
+* **`[String]` Ensure** _(Write)_: Determines whether resource should be present or absent. { Present | Absent }.
+* **`[String]` Address** _(Key)_: The address the listener should be listening on. ( Confirm This )
+* **`[String]` Transport** _(Key)_: The Transport to be used for all connections. { Http | Https }.
+
+#### Examples
+
+* [Create an HTTP WinRM Listener](/Examples/Resources/xWinRMListener/1-CreateHTTPListener.ps1)
