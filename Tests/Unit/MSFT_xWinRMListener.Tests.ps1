@@ -5,8 +5,8 @@ Import-Module "$($PSScriptRoot)\..\..\DSCResources\$($Global:DSCResourceName)\$(
 InModuleScope $Global:DSCResourceName {
 
 $mockParameters = @{
-Address = '127.0.0.1'
-Transport = 'HTTP'
+  Address   = '127.0.0.1'
+  Transport = 'HTTP'
 }
 
   Describe 'xWinRMListener' {
