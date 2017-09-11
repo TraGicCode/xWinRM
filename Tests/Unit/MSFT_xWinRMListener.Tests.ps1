@@ -83,12 +83,25 @@ $mockParameters = @{
       }
 
       Context 'When calling Get-TargetResource' {
-        Context 'When the Resource exists' {
+        Context 'When the resource exists' {
           Mock Get-TargetResource { return @{Ensure='Present'; } }
           It 'calls winrm.exe set subcommand' {
             Mock Configure-WinRMListener
             Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
-            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1
+            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
+              $Operation -eq 'update'
+            }
+          }
+        }
+
+        Context 'When the resource exists but needs to be deleted' {
+          It 'calls winrm.exe delete subcommand' {
+            Mock Configure-WinRMListener
+            Mock Get-TargetResource { return @{Ensure='Present'; } }
+            Set-TargetResource -Ensure 'Absent' -Address '127.0.0.1' -Transport 'http'
+            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
+              $Operation -eq 'delete'
+            }
           }
         }
 
@@ -97,7 +110,9 @@ $mockParameters = @{
           It 'calls winrm.exe create subcommand' {
             Mock Configure-WinRMListener
             Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
-            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1
+            Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
+              $Operation -eq 'create'
+            }
           }
         }
 
