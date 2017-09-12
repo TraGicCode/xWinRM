@@ -1,5 +1,5 @@
 
-Describe 'StyleConventions' {
+Describe 'StyleConventions' -Tag Unit {
     Import-Module -Name PSScriptAnalyzer
     $dscResourceModules = Get-ChildItem -Path "$PSScriptRoot\..\..\DSCResources\**\*.psm1"
     $result = Invoke-ScriptAnalyzer -Path $dscResourceModules -Severity Error, Warning -ExcludeRule PSUseSingularNouns, PSUseApprovedVerbs

@@ -9,7 +9,7 @@ $mockParameters = @{
   Transport = 'HTTP'
 }
 
-  Describe 'xWinRMListener' {
+  Describe 'xWinRMListener' -Tag Unit {
 
     It 'is syntactically correct' {
       Test-xDscSchema "$PSScriptRoot\..\..\DSCResources\MSFT_xWinRMListener\MSFT_xWinRMListener.schema.mof"
