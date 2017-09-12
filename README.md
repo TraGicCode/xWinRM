@@ -80,6 +80,7 @@ Manages the WinRM Listeners.
 * **`[String]` Ensure** _(Write)_: Determines whether resource should be present or absent. { Present | Absent }.
 * **`[String]` Address** _(Key)_: The address the listener should be listening on. ( Confirm This )
 * **`[String]` Transport** _(Key)_: The Transport to be used for all connections. { Http | Https }.
+* **`[Boolean]` Enabled** _(Write)_: Whether or not the listener is enabled or disabled. { *True* | False }
 
 #### Examples
 
