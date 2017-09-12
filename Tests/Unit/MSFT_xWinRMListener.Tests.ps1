@@ -130,12 +130,12 @@ $mockParameters = @{
     Describe "Test-TargetResource" {
 
       It 'returns a boolean' {
-        (Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http') | Should BeOfType [Boolean]
+        (Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' -Enabled $true) | Should BeOfType [Boolean]
       }
 
       Context 'When calling Get-TargetResource' {
         Mock Get-TargetResource
-        Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
+        Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'  -Enabled $true
 
         It 'forwarders parameters to Get-TargetResource Correctly' {
           Assert-MockCalled Get-TargetResource -ParameterFilter {
@@ -151,14 +151,14 @@ $mockParameters = @{
       Context 'When the resource does not exist' {
         Mock Get-TargetResource { return $null }
         It 'returns false' {
-          Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' | Should be $false
+          Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' -Enabled $true | Should be $false
         }
       }
 
       Context 'When the resource is in the desired state' {
         Mock Get-TargetResource { return @{Ensure='Present';Address='127.0.0.1'; Transport='http'; Enabled=$true } }
         It 'returns true' {
-          Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' | Should be $true
+          Test-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' -Enabled $true | Should be $true
         }
       }
 
@@ -166,7 +166,7 @@ $mockParameters = @{
         Context 'When the resource is present on the system' {
           Mock Get-TargetResource { return @{ Ensure='Present';Address='127.0.0.1'; Transport='http' } }
           It 'returns false' {
-            Test-TargetResource -Ensure 'Absent' -Address '127.0.0.1' -Transport 'http' | Should be $false
+            Test-TargetResource -Ensure 'Absent' -Address '127.0.0.1' -Transport 'http' -Enabled $true | Should be $false
           }
         }
 
