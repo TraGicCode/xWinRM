@@ -109,7 +109,8 @@ $mockParameters = @{
             Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
               $Operation -eq 'delete' -and
               $Address   -eq '127.0.0.1' -and
-              $Transport -eq 'http'
+              $Transport -eq 'http' -and
+              $Enabled   -eq $true
             }
           }
         }
@@ -122,7 +123,8 @@ $mockParameters = @{
             Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
               $Operation -eq 'create' -and
               $Address   -eq '127.0.0.1' -and
-              $Transport -eq 'http'
+              $Transport -eq 'http' -and
+              $Enabled   -eq $true
             }
           }
         }
