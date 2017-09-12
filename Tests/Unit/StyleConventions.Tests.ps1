@@ -2,7 +2,7 @@
 Describe 'StyleConventions' {
     Import-Module -Name PSScriptAnalyzer
     $dscResourceModules = Get-ChildItem -Path "$PSScriptRoot\..\..\DSCResources\**\*.psm1"
-    $result = Invoke-ScriptAnalyzer -Path $dscResourceModules -Severity Error, Warning
+    $result = Invoke-ScriptAnalyzer -Path $dscResourceModules -Severity Error, Warning -ExcludeRule PSUseSingularNouns, PSUseApprovedVerbs
     
     It 'has no error or warning severity rules broken' {
 
