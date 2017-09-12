@@ -12,7 +12,7 @@ Configuration CreateHTTPListener
         xWinRMListener CreateListener
         {
             Ensure = 'Present'
-            Address = '127.0.0.1'
+            Address = '*'
             Transport = 'HTTP'
         }
     }
