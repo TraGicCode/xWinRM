@@ -84,19 +84,19 @@ $mockParameters = @{
     Describe 'Set-TargetResource' {
 
       It 'calls Get-TargetResource' {
-        Mock Get-TargetResource { return @{Ensure='Present'; Address='127.0.0.1'; Transport='http'} }
+        Mock Get-TargetResource { return @{Ensure='Present'; Address='127.0.0.1'; Transport='http'; Enabled=$true} }
         Mock Configure-WinRMListener
-        Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
+        Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' -Enabled $true
 
         Assert-MockCalled Get-TargetResource -Exactly -Times 1
       }
 
       Context 'When calling Get-TargetResource' {
         Context 'When the resource exists and has not drifted' {
-          Mock Get-TargetResource { return @{Ensure='Present'; Address='127.0.0.1'; Transport='http'} }
-          It 'will not call Confiugre-WinRMListener' {
+          Mock Get-TargetResource { return @{Ensure='Present'; Address='127.0.0.1'; Transport='http'; Enabled=$true } }
+          It 'will not call Configure-WinRMListener' {
             Mock Configure-WinRMListener
-            Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
+            Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' -Enabled $true
             Assert-MockCalled Configure-WinRMListener -Exactly -Times 0
           }
         }
@@ -105,9 +105,11 @@ $mockParameters = @{
           It 'calls winrm.exe delete subcommand' {
             Mock Configure-WinRMListener
             Mock Get-TargetResource { return @{Ensure='Present'; } }
-            Set-TargetResource -Ensure 'Absent' -Address '127.0.0.1' -Transport 'http'
+            Set-TargetResource -Ensure 'Absent' -Address '127.0.0.1' -Transport 'http' -Enabled $true
             Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
-              $Operation -eq 'delete'
+              $Operation -eq 'delete' -and
+              $Address   -eq '127.0.0.1' -and
+              $Transport -eq 'http'
             }
           }
         }
@@ -116,9 +118,11 @@ $mockParameters = @{
           Mock Get-TargetResource { return @{Ensure='Absent'; } }
           It 'calls winrm.exe create subcommand' {
             Mock Configure-WinRMListener
-            Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http'
+            Set-TargetResource -Ensure 'Present' -Address '127.0.0.1' -Transport 'http' -Enabled $true
             Assert-MockCalled Configure-WinRMListener -Exactly -Times 1 -ParameterFilter {
-              $Operation -eq 'create'
+              $Operation -eq 'create' -and
+              $Address   -eq '127.0.0.1' -and
+              $Transport -eq 'http'
             }
           }
         }
