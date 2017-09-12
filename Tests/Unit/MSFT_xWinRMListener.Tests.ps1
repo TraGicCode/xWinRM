@@ -27,7 +27,6 @@ $mockParameters = @{
     # get-dscresource -Name xWinRMListener -Syntax
 
 
-
     Describe 'Get-TargetResource' {
 
       $WinRMListener = Get-TargetResource @mockParameters
