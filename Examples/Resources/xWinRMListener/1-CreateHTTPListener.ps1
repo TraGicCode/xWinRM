@@ -10,8 +10,9 @@ Configuration CreateHTTPListener
 
     xWinRMListener CreateListener
     {
-        Ensure = 'Present'
-        Address = '*'
+        Ensure    = 'Present'
+        Address   = '*'
         Transport = 'HTTP'
+        Enabled   = $true
     }
 }
