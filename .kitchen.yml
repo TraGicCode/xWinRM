@@ -19,14 +19,14 @@ verifier:
   test_folder: Tests/Integration
 
 platforms:
-  - name: windows-2016-standard
+  - name: windows-2016-standard 
     driver:
       box: tragiccode/windows-2016-standard
       gui: true
     provisioner:
       dsc_local_configuration_manager_version: wmf5
 suites:
-  - name: MSFT_xWinRMListener
+  - name: MSFT_xWinRMListInsener
     provisioner: 
       configuration_script_folder: Tests/Integration/MSFT_xWinRMListener
       configuration_script: MSFT_xWinRMListener.config.ps1
