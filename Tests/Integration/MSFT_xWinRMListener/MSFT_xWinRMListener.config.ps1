@@ -16,3 +16,6 @@ Configuration CreateHTTPListener
         Enabled   = $true
     }
 }
+
+# I could do some pretest setup here
+# New-Item -Path c:\mfyffe-rocks.txt
