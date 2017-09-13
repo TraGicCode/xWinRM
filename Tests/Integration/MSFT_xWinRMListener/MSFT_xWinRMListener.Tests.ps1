@@ -1,6 +1,6 @@
 
-describe 'When RavenDB is installed' {
-    it 'Verifies RavenDB is installed as a service' {
+describe 'WinRM HTTP Listener' {
+    it 'should ' {
       $true | should be $True
     }
     
