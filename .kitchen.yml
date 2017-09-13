@@ -26,7 +26,7 @@ platforms:
     provisioner:
       dsc_local_configuration_manager_version: wmf5
 suites:
-  - name: MSFT_xWinRMListeners
+  - name: MSFT_xWinRMListener
     provisioner: 
       configuration_script_folder: Tests/Integration/MSFT_xWinRMListener
       configuration_script: MSFT_xWinRMListener.config.ps1
