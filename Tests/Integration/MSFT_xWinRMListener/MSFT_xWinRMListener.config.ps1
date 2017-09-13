@@ -13,6 +13,6 @@ Configuration CreateHTTPListener
         Ensure    = 'Present'
         Address   = '*'
         Transport = 'HTTP'
-        Enabled   = $false
+        Enabled   = $true
     }
 }

@@ -1,10 +1,9 @@
 
 describe 'WinRM HTTP Listener' {
-    it 'should ' {
-      $true | should be $True
-    }
-    
-    it 'Verifies RavenDB is Running as a service' {
-      $false | should be $True
-    }
+  $result = winrm get winrm/config/Listener?Address=*+Transport=http
+
+  It "has the expected properties" {
+    $result | Should BeLike "Address = `*"
+    $result | Should BeLike "Transport = http"
+  }
 }
