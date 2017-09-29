@@ -26,8 +26,21 @@ platforms:
     provisioner:
       dsc_local_configuration_manager_version: wmf5
 suites:
-  - name: MSFT_xWinRMListener
+  - name: Add-And-Remove-Listener
     provisioner: 
-      configuration_script_folder: Tests/Integration/MSFT_xWinRMListener
+      configuration_script_folder: Tests/Integration/Add-And-Remove-Listener
       configuration_script: MSFT_xWinRMListener.config.ps1
-      configuration_name: CreateHttpListener
+      configuration_name: 
+        - AddListener
+        - RemoveListener
+      configuration_data:
+        AllNodes:
+          - nodename: localhost
+            AddListener:
+              Ensure: present
+              Address: IP:128.0.0.1
+              Transport: 'HTTP'
+            RemoveListener:
+              Ensure: absent
+              Address: IP:128.0.0.1
+              Transport: 'HTTP'
